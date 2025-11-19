@@ -39,6 +39,9 @@ jspm_packages/
 # Mongodb dev server data
 mongo_data/
 
+# Redis dev server data
+redis_data/
+
 # Typescript v1 declaration files
 typings/
 
