@@ -1,4 +1,7 @@
-import { Blog } from '../types'
+interface Blog {
+  likes: number
+  author: string
+}
 
 const dummy = (_blogs: Blog[]) => {
   return 1
@@ -18,8 +21,7 @@ const mostProlificWriter = (blogs: Blog[]) => {
   let writers: Writers = {}
 
   blogs.map((b) => {
-    if (writers[b.author]) writers[b.author]++
-    else writers[b.author] = 1
+    writers[b.author] = (writers[b.author] ?? 1) + 1
   })
 
   const books = Math.max(...Object.values(writers))
@@ -36,7 +38,7 @@ const mostLikedAuthor = (blogs: Blog[]) => {
   let writers: Writers = {}
 
   blogs.map((b) => {
-    if (writers[b.author] != undefined) writers[b.author] += b.likes
+    if (writers[b.author] != undefined) writers[b.author] = (writers[b.author] ?? 0) + b.likes
     else writers[b.author] = b.likes
   })
 

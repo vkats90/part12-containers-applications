@@ -9,7 +9,7 @@ const connectionString =
 
 const dialectOptions: any = {}
 // Only enable SSL in production; local and test environments use unencrypted connections
-if (process.env.NODE_ENV === 'production') {
+/*if (process.env.NODE_ENV === 'production') {
   dialectOptions.ssl = {
     require: true,
     rejectUnauthorized: false,
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   // Explicitly disable SSL for development and test
   dialectOptions.ssl = false
-}
+}*/
 
 export const sequelize = new Sequelize(connectionString, {
   dialectOptions,

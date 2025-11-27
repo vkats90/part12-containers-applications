@@ -4,11 +4,11 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm ci --production=false
+RUN npm ci
 
 COPY --chown=node:node . .
 
-ENV DEBUG=playground:*
+RUN npm run build
 
 USER node
 
