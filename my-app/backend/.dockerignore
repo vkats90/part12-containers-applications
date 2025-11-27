@@ -1,0 +1,6 @@
+node_modules/
+.gitignore
+.dockerignore
+Dockerfile
+commands.sql
+printBlogs.sh

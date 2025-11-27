@@ -1,0 +1,63 @@
+services:
+  app:
+    image: bloglist-frontend-dev
+    volumes:
+      - ./frontend/:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      VITE_BACKEND_URL: http://localhost:8000/api/
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    container_name: bloglist-frontend-dev
+    depends_on:
+      - server
+
+  server:
+    image: bloglist-backend-dev
+    volumes:
+      - ./backend/:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      POSTGRES_URL: postgres://root:example@postgres:5432/bloglist_db
+      PORT: 3001
+      SECRET: secret
+    build:
+      context: ./backend
+      dockerfile: dev.Dockerfile
+    container_name: bloglist-backend-dev
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    restart: always
+    # set shared memory limit when using docker compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    ports:
+      - 5432:5432
+    volumes:
+      - ./backend/pgdata:/var/lib/postgresql/18/docker
+
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: bloglist_db
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8000:80
+    container_name: reverse-proxy
+    depends_on:
+      - app
+      - server
+      - postgres
+volumes:
+  pgdata:
