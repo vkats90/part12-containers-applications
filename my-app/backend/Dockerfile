@@ -1,13 +1,15 @@
-FROM node:20
+FROM node:24
 
 WORKDIR /usr/src/app
 
-COPY --chown=node:node . .
+COPY package*.json ./
 
-RUN npm ci
+RUN npm ci --production=false
+
+COPY --chown=node:node . .
 
 ENV DEBUG=playground:*
 
 USER node
 
-CMD ["npm", "start", "--", "--host"]
+CMD ["sh", "-c", "npm run migration:up && npm start -- --host"]
